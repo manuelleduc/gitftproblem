@@ -24,14 +24,16 @@ public class GiftSolution {
             int size = attributions.size();
 
             final List<Person> lst = new ArrayList<>();
-            Pair<Person, Person> current = attributions.get(0);
-            while (!lst.contains(current.getKey())) {
-                lst.add(current.getKey());
-                final Pair<Person, Person> currentF = current;
-                current = attributions.stream()
-                        .filter(p -> Objects.equals(p.getKey(), currentF.getValue()))
-                        .findFirst()
-                        .get();
+            if(attributions.size() > 0) {
+                Pair<Person, Person> current = attributions.get(0);
+                while (!lst.contains(current.getKey())) {
+                    lst.add(current.getKey());
+                    final Pair<Person, Person> currentF = current;
+                    current = attributions.stream()
+                            .filter(p -> Objects.equals(p.getKey(), currentF.getValue()))
+                            .findFirst()
+                            .get();
+                }
             }
 
             return lst.size() == size;

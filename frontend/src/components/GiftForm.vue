@@ -1,6 +1,5 @@
 <template>
     <div>
-        <h1>{{hello}}</h1>
         <div>
             <label>
                 {{ $t("message.family_name") }}
@@ -30,8 +29,7 @@
         data: function () {
             return {
                 new_family_name: '',
-                errors: [],
-                hello: 'waiting'
+                errors: []
             }
         },
         computed: mapState({
@@ -59,11 +57,6 @@
                 }
             }
         }
-        /*,
-        mounted() {
-            axios.get('http://localhost:8081/hello').then(response => this.hello = response.data)
-
-        }*/
     }
 </script>
 

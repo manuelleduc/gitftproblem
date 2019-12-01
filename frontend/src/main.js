@@ -16,6 +16,7 @@ const store = new Vuex.Store({
             {name: "leduc", members: [{name: "manuel"}, {name: "flora"},]},
             {name: "plaisance", members: [{name: "justine"}, {name: "audrina"},]},
         ],
+        result: []
     },
     mutations: {
         new_family: function (state, name) {
@@ -77,7 +78,7 @@ store.watch((state) => {
     (newVal) => {
         const params = newVal.families.map(f => ({
             name: f.name,
-            personnes: f.members.map(p => ({
+            people: f.members.map(p => ({
                 name: p.name
             }))
 
@@ -90,7 +91,7 @@ store.watch((state) => {
 
 const params = store.state.families.map(f => ({
     name: f.name,
-    personnes: f.members.map(p => ({
+    people: f.members.map(p => ({
         name: p.name
     }))
 

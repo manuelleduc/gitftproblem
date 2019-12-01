@@ -7,22 +7,22 @@ public class Person {
 
     @JsonbTransient
     private Family family;
-    private boolean on24;
-    private boolean on25;
+    private Boolean on24;
+    private Boolean on25;
     private String mail;
 
     public Person() {
         this.family = null;
-        this.on24 = true;
-        this.on25 = true;
+        this.on24 = null;
+        this.on25 = null;
         this.mail = null;
     }
 
     public Person(String name, Family family, String mail) {
-        this(name, family, true, true, mail);
+        this(name, family, null, null, mail);
     }
 
-    public Person(String name, Family family, boolean on24, boolean on25, String mail) {
+    public Person(String name, Family family, Boolean on24, Boolean on25, String mail) {
         this.name = name;
         this.family = family;
         this.family.getPeople().add(this);
@@ -53,7 +53,8 @@ public class Person {
     }
 
     public boolean isOn24() {
-        return on24 && this.family.isOn24();
+        if (on24 != null) return on24;
+        else return this.family.isOn24();
     }
 
     public void setOn24(boolean on24) {
@@ -61,7 +62,8 @@ public class Person {
     }
 
     public boolean isOn25() {
-        return on25 && this.family.isOn25();
+        if (on25 != null) return on25;
+        else return this.family.isOn25();
     }
 
     public void setOn25(boolean on25) {

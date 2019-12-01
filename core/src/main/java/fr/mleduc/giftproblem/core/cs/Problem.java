@@ -35,8 +35,10 @@ public class Problem {
 
             int i = 0;
             for (Variable v : model.getVars()) {
-                giftSolution.addPair(people.get(i), people.get(((IntVar) v).getValue()));
-                i++;
+                if(v.getName().startsWith("var_")) {
+                    giftSolution.addPair(people.get(i), people.get(((IntVar) v).getValue()));
+                    i++;
+                }
             }
 
             boolean singleLoop = GiftSolution.isSingleLoop(giftSolution);
@@ -67,7 +69,8 @@ public class Problem {
         }
 
         // RULE 1: Everybody must give and receive a gift.
-        model.allDifferent(persIntVar).post();
+        if(people.size()>0)
+            model.allDifferent(persIntVar).post();
 
         // RULE 2: no gift in a familly
         for (Family f : familySet) {

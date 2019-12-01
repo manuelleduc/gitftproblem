@@ -1,18 +1,20 @@
 <template>
     <div id="app">
         <img alt="Vue logo" src="./assets/logo.png">
+        <GiftResult />
         <GiftForm />
     </div>
 </template>
 
 <script>
     import GiftForm from './components/GiftForm.vue'
+    import GiftResult from "./components/GiftResult";
 
 
     export default {
         name: 'app',
         components: {
-            GiftForm
+            GiftForm, GiftResult
         }
     }
 </script>
