@@ -12,17 +12,22 @@ Vue.use(VueI18n);
 const store = new Vuex.Store({
     strict: true,
     state: {
-        families: [
-            {name: "leduc", members: [{name: "manuel"}, {name: "flora"},]},
-            {name: "plaisance", members: [{name: "justine"}, {name: "audrina"},]},
-        ],
+        families: [],
         result: []
     },
     mutations: {
-        new_family: function (state, name) {
+        initialiseStore(state) {
+            // Check if the ID exists
+            if (localStorage.getItem('store')) {
+                this.replaceState(
+                    Object.assign(state, JSON.parse(localStorage.getItem('store')))
+                );
+            }
+        },
+        new_family(state, name) {
             state.families.push({name: name, members: []})
         },
-        new_family_member: function (state, params) {
+        new_family_member(state, params) {
             state.families = state.families.map(f => {
                 if (f.name === params.family) {
                     f.members.push({name: params.name})
@@ -30,43 +35,43 @@ const store = new Vuex.Store({
                 return f
             })
         },
-        remove_member: function (state, params) {
+        remove_member(state, params) {
             const family = params.family;
             const name = params.name;
             const f = state.families.filter(f => f.name === family)[0];
             f.members = f.members.filter(m => m.name !== name)
         },
-        remove_family: function (state, params) {
+        remove_family(state, params) {
             state.families = state.families.filter(f => f.name !== params.name)
         },
-        set_result: function (state, params) {
+        set_result(state, params) {
             state.result = params.result
         }
     },
     actions: {
-        addFamily: function (context, params) {
+        addFamily(context, params) {
             context.commit('new_family', params.name);
         },
-        addMember: function (context, params) {
+        addMember(context, params) {
             context.commit({
                 type: 'new_family_member',
                 family: params.family,
                 name: params.name
             })
         },
-        removeMember: function (context, params) {
+        removeMember(context, params) {
             context.commit({
                 type: 'remove_member',
                 'family': params.family, 'name': params.name,
             })
         },
-        removeFamily: function (context, params) {
+        removeFamily(context, params) {
             context.commit({
                 type: 'remove_family',
                 'name': params.name,
             })
         },
-        setResult: function (context, result) {
+        setResult(context, result) {
             context.commit({type: 'set_result', result: result})
         }
     }
@@ -88,6 +93,11 @@ store.watch((state) => {
         })
     }
 );
+
+store.subscribe((mutation, state) => {
+    // Store the state object as a JSON string
+    localStorage.setItem('store', JSON.stringify(state));
+});
 
 const params = store.state.families.map(f => ({
     name: f.name,
@@ -130,6 +140,9 @@ const i18n = new VueI18n({
 new Vue({
     el: '#app',
     store,
+    beforeCreate() {
+        this.$store.commit('initialiseStore');
+    },
     i18n,
     render: h => h(App),
 });//.$mount('#app')
